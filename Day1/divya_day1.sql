@@ -1,22 +1,22 @@
 CREATE TABLE IF NOT EXISTS categories (
     categoryID INT PRIMARY KEY,         
-    categoryName TEXT NOT NULL,         
+    categoryName VARCHAR(55) NOT NULL,         
     description TEXT                    
 );
 
 
 CREATE TABLE IF NOT EXISTS customers (
     customerID VARCHAR(5) PRIMARY KEY,
-    companyName VARCHAR(255) UNIQUE, 
-    contactName VARCHAR(255),
-    contactTitle VARCHAR(255),
-    city VARCHAR(255),
-    country VARCHAR(255)
+    companyName VARCHAR(55) UNIQUE, 
+    contactName VARCHAR(55),
+    contactTitle VARCHAR(55),
+    city VARCHAR(55),
+    country VARCHAR(55)
 );
 
 CREATE TABLE IF NOT EXISTS shippers (
     shipperID INT PRIMARY KEY,
-    companyName VARCHAR(255) NOT NULL
+    companyName VARCHAR(55) NOT NULL
 );
 ALTER TABLE shippers
 ADD CONSTRAINT unique_company_name UNIQUE (companyName);
