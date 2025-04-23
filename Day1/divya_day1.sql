@@ -26,6 +26,9 @@ CREATE TABLE IF NOT EXISTS data_dictionary (
     fieldName VARCHAR(50) NOT NULL,
     description TEXT
 );
+ALTER TABLE data_dictionary
+ADD CONSTRAINT pk_data_dictionary PRIMARY KEY (tableName, fieldName);
+
 
 SELECT * FROM data_dictionary;
 
