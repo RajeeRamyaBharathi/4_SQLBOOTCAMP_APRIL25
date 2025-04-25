@@ -107,7 +107,9 @@ DO UPDATE SET
     discontinued = EXCLUDED.discontinued,
     category_id = EXCLUDED.category_id;
 select * from products;
-6)      Write a MERGE query:
+6)     
+
+ Write a MERGE query:
 Create temp table with name:  ‘updated_products’ and insert values as below:
  
 productID
@@ -149,51 +151,23 @@ productID
 *  Insert any new products from updated_products that don’t exist in products only if updated_products .discontinued =0.
 
 
-        CREATE TEMP TABLE updated_products (
-    productID INT PRIMARY KEY,
-    productName TEXT,
-    quantityPerUnit TEXT,
-    unitPrice NUMERIC(10, 2),
-    discontinued INT,
-    categoryID INT);
-
-
-
-
-        INSERT INTO updated_products (productID, 
-        productName, quantityPerUnit, unitPrice, discontinued, categoryID)
-VALUES
-    (100, 'Wheat bread', '10', 20,1,5),
-    (101, 'White bread', '5 boxes', 19.99, 0, 5),
-    (102, 'Midnight Mango Fizz', '24 - 12 oz bottles', 19, 0, 1),
-    (103, 'Savory Fire Sauce', '12 - 550 ml bottles', 10, 0, 2)
-
-
-
-
-        UPDATE public.products
-        SET unit_price=updated_products.unitprice, discontinued= updated_products.discontinued
-        from updated_products WHERE updated_products.discontinued=0;
-
-
-
-
-  DELETE FROM products
-USING updated_products
-WHERE products.product_id = updated_products.productid
-  AND updated_products.discontinued = 1;
-
-
-
-
-insert into products (unit_price,discontinued) 
- select unitprice,discontinued 
- from updated_products 
- where discontinued=0
- AND NOT EXISTS ( Select 1
- from products
- where products.product_id=updated_products.productid)
-
+        Merge into products p
+	using updated_products  up
+	on p.product_id=up.productid  
+	when matched and up.discontinued=0 then 
+	Update Set 
+	"unit_price" = up."unitPrice",
+	"discontinued" = up."discontinued"
+	when matched and up.discontinued=1 then 
+	Delete 
+	when matched and up.discontinued=0 then
+    INSERT("product_id","product_name","quantity_per_unit","unit_price","discontinued","category_id")
+	VALUES(up."productID",up."productName",up."quantityPerUnit",up."unitPrice",up."discontinued",up."categoryID");
+	
+	insert (unitprice,discontiued) values (products.unitprice,products.discontuned)
+	update set discontinued=0 
+	when not matched then 
+	insert (unitprice,discontiued) values (products.unitprice,products.discontuned)
 
  7) List all orders with employee full names. (Inner join)
 
