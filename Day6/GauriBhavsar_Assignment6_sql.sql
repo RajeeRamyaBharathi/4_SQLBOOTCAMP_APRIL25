@@ -18,7 +18,7 @@ from products
 where category_id = 
  (select category_id
   from categories 
-  where category_name = 'Beverages');
+  where category_name = 'Drinks');
 
 
 3.      Find Orders by Employee with Most Sales
